@@ -18,11 +18,25 @@ All methods, can return errors:
 * 'ERROR_*', None (from [antigate list](http://antigate.com/panel.php?action=api))
 * 'ERROR_HTTP', status_code (requests errors)
 
+### Automatic (most common usage)
+#####antigate function
+```python
+import antigate
+status, text = antigate.antigate(
+    your_key_from_antigate,
+    bytes_of_your_captcha,
+    timeout=5,             # \
+    count=6,               #  ) default values (can be omitted)
+    host="antigate.com",   # /
+)
+```
+This function is just wrapper around creation Antigate object and calling 'run' function.
+
 ### Manual usage
 #####Creating:
 ```python
 import antigate
-a = antigate.Antigate(your_key_from_antigate)
+a = antigate.Antigate(your_key_from_antigate, host="antigate.com")
 ```
 
 #####Sending captcha:
@@ -59,19 +73,6 @@ Return values:
 status, text = a.run(bytes_of_your_captcha, timeout=5, count=6)
 ```
 Mix of 'send' and 'status' functions. Timeout is the delay between checks of captcha status. Count is number of checks.
+
 Return values:
 Same as for 'send' and 'status' functions.
-
-### Automatic
-#####antigate function
-```python
-import antigate
-status, text = antigate.antigate(
-    your_key_from_antigate,
-    bytes_of_your_captcha,
-    timeout=5,
-    count=6,
-    host="antigate.com",
-)
-```
-This function is just wrapper around creation Antigate object and calling 'run' function.
