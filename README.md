@@ -1,7 +1,11 @@
 tiny-antigate
 =============
 
-Tinest (as I can imagine) antigate api wrapper
+Tinest (as I can imagine) antigate api wrapper. It's just a **subset** of antigate api. It can only:
+* send captcha
+* check status
+* check balance
+* abuse
 
 ## Reasons
 * [Antigate](https://github.com/gotlium/antigate) wrapper uses [grablib](http://grablib.org/), so it comes with a bit more dependences (like pycurl, lxml, etc.).
