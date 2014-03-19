@@ -19,20 +19,20 @@ All methods, can return errors:
 * 'ERROR_HTTP', status_code (requests errors)
 
 ### Manual usage
-Creating:
+#####Creating:
 ```python
 import antigate
 a = antigate.Antigate(your_key_from_antigate)
 ```
 
-Sending captcha:
+#####Sending captcha:
 ```python
 status, captcha_id = a.send(bytes_of_your_captcha)
 ```
 Return values:
 * 'OK', captcha_id
 
-Getting status:
+#####Getting status:
 ```python
 status, text = a.status(captcha_id)
 ```
@@ -40,21 +40,21 @@ Return values:
 * 'OK', captcha_text
 * 'CAPCHA_NOT_READY', None (yeah, CA **PC** HA_NOT_READY, it's antigate funny mistake)
 
-Abuse:
+#####Abuse:
 ```python
 status, data = a.abuse(captcha_id)
 ```
 Return values:
 * "", None
 
-Balance:
+#####Balance:
 ```python
 balance, data = a.balance()
 ```
 Return values:
 * balance, None
 
-Run method:
+#####Run:
 ```python
 status, text = a.run(bytes_of_your_captcha, timeout=5, count=6)
 ```
@@ -63,6 +63,7 @@ Return values:
 Any of above.
 
 ### Automatic
+#####antigate function
 ```python
 import antigate
 status, text = antigate.antigate(
@@ -73,4 +74,4 @@ status, text = antigate.antigate(
     host="antigate.com",
 )
 ```
-That function is just wrapper around creation Antigate object and calling 'run' functions.
+This function is just wrapper around creation Antigate object and calling 'run' function.
