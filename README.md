@@ -1,7 +1,7 @@
 tiny-antigate
 =============
 
-Tinest (as I can imagine) angigate api wrapper
+Tinest (as I can imagine) antigate api wrapper
 
 ## Reasons
 * [Antigate](https://github.com/gotlium/antigate) wrapper uses [grablib](http://grablib.org/), so it comes with a bit more dependences (like pycurl, lxml, etc.).
@@ -14,6 +14,24 @@ Tinest (as I can imagine) angigate api wrapper
 * requests
 
 ## Usage
+All methods, can return errors:
+* 'ERROR_*', None (from [antigate list](http://antigate.com/panel.php?action=api))
+* 'ERROR_HTTP', status_code (requests errors)
+
+### Automatic
+```python
+import antigate
+status, text = antigate.antigate(
+    your_key_from_antigate,
+    bytes_of_your_captcha,
+    timeout=5,
+    count=6,
+    host="antigate.com",
+)
+```
+Timeout is the delay between checks of captcha status. Count is number of checks.
+
+### Manual usage
 Creating:
 ```python
 import antigate
@@ -24,20 +42,27 @@ Sending captcha:
 ```python
 status, captcha_id = a.send(bytes_of_your_captcha)
 ```
-Status can be 'OK' or 'ERROR_*' from [antigate list](http://antigate.com/panel.php?action=api) (added 'ERROR_HTTP' for requests errors). If 'OK' captcha_id really is captcha id, on 'ERROR_HTTP' it is HTTP status code and None in all other cases.
+Return values:
+* 'OK', captcha_id
 
-Getting status
+Getting status:
 ```python
 status, text = a.status(captcha_id)
 ```
-Status can be 'OK' or 'CAPCHA_NOT_READY' (yeah, ca*pc*ha, it's antigate mistake) or 'ERROR_*' from previous example
+Return values:
+* 'OK', captcha_text
+* 'CAPCHA_NOT_READY', None (yeah, CA**PC**HA_NOT_READY, it's antigate funny mistake)
 
 Abuse:
 ```python
 status, data = a.abuse(captcha_id)
 ```
+Return values:
+* "", None
 
 Balance:
 ```python
 balance, data = a.balance()
 ```
+Return values:
+* balance, None

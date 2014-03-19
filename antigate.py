@@ -1,4 +1,5 @@
 import requests
+import time
 
 
 class Antigate():
@@ -73,3 +74,27 @@ class Antigate():
     def balance(self):
 
         return self.action(action="getbalance")
+
+
+    def run(self, captcha, timeout=5, count=6):  # 30 seconds timeout (5s for 6 times)
+
+        status, captcha_id = self.send(captcha)
+        if status != "OK":
+
+            return status, captcha_id
+
+        for _ in range(count):
+
+            time.sleep(timeout)
+            status, text = self.status(captcha_id)
+            if status == "OK" or status != "CAPCHA_NOT_READY":
+
+                return status, text
+
+        return "CAPCHA_NOT_READY", None
+
+
+def antigate(key, captcha, timeout=5, count=6, host="antigate.com", ):
+
+    a = Antigate(key, host)
+    return a.run(captcha, timeout, count)
