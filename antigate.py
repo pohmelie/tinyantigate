@@ -65,11 +65,6 @@ class Antigate():
         return self.action(action="get", id=cid)
 
 
-    def status_multi(self, *cids):
-
-        return self.action(action="get", ids=str.join(",", cids))
-
-
     def abuse(self, cid):
 
         return self.action(action="reportbad", id=cid)
