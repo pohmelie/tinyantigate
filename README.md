@@ -60,7 +60,7 @@ status, text = a.run(bytes_of_your_captcha, timeout=5, count=6)
 ```
 Mix of 'send' and 'status' functions. Timeout is the delay between checks of captcha status. Count is number of checks.
 Return values:
-Any of above.
+Same as for 'send' and 'status' functions.
 
 ### Automatic
 #####antigate function
