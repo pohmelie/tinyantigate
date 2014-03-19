@@ -3,7 +3,7 @@ tiny-antigate
 
 Tinest (as I can imagine) antigate api wrapper. It's just a **subset** of antigate api. It can only:
 * send captcha
-* check status
+* check captcha status
 * check balance
 * abuse
 
