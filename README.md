@@ -38,7 +38,7 @@ status, text = a.status(captcha_id)
 ```
 Return values:
 * 'OK', captcha_text
-* 'CAPCHA_NOT_READY', None (yeah, CA**PC**HA_NOT_READY, it's antigate funny mistake)
+* 'CAPCHA_NOT_READY', None (yeah, CA **PC** HA_NOT_READY, it's antigate funny mistake)
 
 Abuse:
 ```python
