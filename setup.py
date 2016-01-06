@@ -20,7 +20,7 @@ setup(
     author_email="multisosnooley@gmail.com",
     url="https://github.com/pohmelie/tinyantigate",
     license="WTFPL",
-    packages=["tinyantigate"],
+    py_modules=["tinyantigate"],
     install_requires=["requests"],
     include_package_data=True
 )
