@@ -1,7 +1,7 @@
-tiny-antigate
-=============
+tinyantigate
+============
 
-Tinest (as I can imagine) antigate api wrapper. It's just a **subset** of antigate api. It can only:
+Tinest (as I can imagine) antigate/anti-captcha api wrapper. It's just a **subset** of antigate api. It can only:
 * send captcha
 * check captcha status
 * check balance
@@ -19,64 +19,68 @@ Tinest (as I can imagine) antigate api wrapper. It's just a **subset** of antiga
 
 ## Usage
 All methods, can return errors:
-* 'ERROR_*', None (from [antigate list](http://antigate.com/panel.php?action=api))
+* 'ERROR_*', None (from [antigate list](https://anti-captcha.com/apidoc))
 * 'ERROR_HTTP', status_code (requests errors)
 
 ### Automatic (most common usage)
 #####antigate function
 ```python
-import antigate
-status, text = antigate.antigate(
+from tinyantigate import antigate
+status, text = antigate(
     your_key_from_antigate,
     bytes_of_your_captcha,
-    timeout=5,             # \
-    count=6,               #  ) default values (can be omitted)
-    host="antigate.com",   # /
+    timeout=5,                  # \
+    count=6,                    #  ) default values (can be omitted)
+    host="anti-captcha.com",    # /
 )
 ```
 This function is just wrapper around creation Antigate object and calling 'run' function.
 
 ### Manual usage
-#####Creating:
+
+##### Creating:
 ```python
-import antigate
-a = antigate.Antigate(your_key_from_antigate, host="antigate.com")
+import tinyantigate
+a = tinyantigate.Antigate(your_key_from_antigate, host="anti-captcha.com")
 ```
 
-#####Sending captcha:
+##### Sending captcha:
 ```python
 status, captcha_id = a.send(bytes_of_your_captcha)
 ```
 Return values:
 * 'OK', captcha_id
 
-#####Getting status:
+##### Getting status:
 ```python
 status, text = a.status(captcha_id)
 ```
 Return values:
 * 'OK', captcha_text
-* 'CAPCHA_NOT_READY', None (yeah, CA **PC** HA_NOT_READY, it's antigate funny mistake)
+* 'CAPCHA_NOT_READY', None (yeah, CA**PC**HA_NOT_READY, it's antigate funny mistake)
 
-#####Abuse:
+##### Abuse:
 ```python
 status, data = a.abuse(captcha_id)
 ```
 Return values:
 * "", None
 
-#####Balance:
+##### Balance:
 ```python
 balance, data = a.balance()
 ```
 Return values:
 * balance, None
 
-#####Run:
+`balance` as string
+
+##### Run:
 ```python
 status, text = a.run(bytes_of_your_captcha, timeout=5, count=6)
 ```
 Mix of 'send' and 'status' functions. Timeout is the delay between checks of captcha status. Count is number of checks.
 
 Return values:
+
 Same as for 'send' and 'status' functions.

@@ -2,25 +2,21 @@ import requests
 import time
 
 
+__version__ = "0.1.0"
+
+DEFAULT_HOST = "anti-captcha.com"
+
+
 class Antigate():
 
-    def __init__(self, key, host="antigate.com"):
+    def __init__(self, key, host=DEFAULT_HOST):
 
         self.key = key
         self.host = host
 
-
     def build_url(self, suburl):
 
         return str.format("http://{}/{}", self.host, suburl)
-
-
-    def get_action_url(self, **kwargs):
-
-        kwargs["key"] = self.key
-        actions = map(lambda item: str.format("{}={}", *item), kwargs.items())
-        return self.build_url("res.php?") + str.join("&", actions)
-
 
     def parse_answer(self, r):
 
@@ -36,7 +32,6 @@ class Antigate():
 
             return r.text, None
 
-
     def send(self, captcha):
 
         return self.parse_answer(
@@ -51,50 +46,46 @@ class Antigate():
             )
         )
 
+    def action(self, **payload):
 
-    def action(self, **kwargs):
-
+        payload["key"] = self.key
         return self.parse_answer(
             requests.get(
-                self.get_action_url(**kwargs)
+                self.build_url("res.php"),
+                params=payload
             )
         )
-
 
     def status(self, cid):
 
         return self.action(action="get", id=cid)
 
-
     def abuse(self, cid):
 
         return self.action(action="reportbad", id=cid)
-
 
     def balance(self):
 
         return self.action(action="getbalance")
 
-
-    def run(self, captcha, timeout=5, count=6):  # 30 seconds timeout (5s for 6 times)
+    def run(self, captcha, timeout=5, count=6):
 
         status, captcha_id = self.send(captcha)
         if status != "OK":
 
             return status, captcha_id
 
-        for _ in range(count):
+        for _ in range(max(1, count)):
 
             time.sleep(timeout)
             status, text = self.status(captcha_id)
-            if status == "OK" or status != "CAPCHA_NOT_READY":
+            if status != "CAPCHA_NOT_READY":
 
-                return status, text
+                break
 
-        return "CAPCHA_NOT_READY", None
+        return status, text
 
 
-def antigate(key, captcha, timeout=5, count=6, host="antigate.com", ):
+def antigate(key, captcha, timeout=5, count=6, host=DEFAULT_HOST):
 
-    a = Antigate(key, host)
-    return a.run(captcha, timeout, count)
+    return Antigate(key, host).run(captcha, timeout, count)
